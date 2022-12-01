@@ -11,7 +11,6 @@ final getIt = GetIt.instance;
 
 // configureModulesDependencies imported from feature_module
 final configurators = [
-
   //main app configurator
   AppDependencyConfigurator(),
 
@@ -29,8 +28,6 @@ final configurators = [
 
   //configure domain layer
   DomainDependencyConfigurator(),
-
-
 ];
 
 Future configureDependencies(DependencyConfigurationContext context) async {

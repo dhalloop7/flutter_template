@@ -1,19 +1,23 @@
 import 'dart:async';
 
+import "package:equatable/equatable.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_errors/flutter_errors.dart';
 import 'package:injectable/injectable.dart';
-import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+import 'package:statemanagement_bloc/statemanagement_bloc.dart';
 
 @injectable
-class SplashViewModel extends BasePageViewModel {
+class SplashViewModel extends BasePageViewModel<SplashEvent, SplashState> {
   final String myBaseUrl;
   final StreamController<bool> _navigateToDashboardController =
       StreamController();
   final FlutterExceptionHandlerBinder exceptionHandlerBinder;
   late Timer future;
 
-  SplashViewModel(@factoryParam this.myBaseUrl, this.exceptionHandlerBinder) {
+  AnimationController? controller;
+
+  SplashViewModel(@factoryParam this.myBaseUrl, this.exceptionHandlerBinder)
+      : super(SplashEntryState()) {
     future = Timer(const Duration(seconds: 2), () async {
       _navigateToDashboardController.sink.add(true);
       _navigateToDashboardController.close();
@@ -26,7 +30,7 @@ class SplashViewModel extends BasePageViewModel {
     exceptionHandlerBinder.handle(block: () {
       debugPrint("exceptionHandlerBinder start");
       throw const FormatException("Something is wrong");
-      /* throw NetworkError(
+      /*throw NetworkError(
           httpError: 1,
           message: "message Testing another error",
           cause: Exception("Testing another error"));*/
@@ -55,11 +59,14 @@ class SplashViewModel extends BasePageViewModel {
       return false;
     }).execute();*/
   }
-
-  @override
-  void dispose() {
-    future.cancel();
-    _navigateToDashboardController.close();
-    super.dispose();
-  }
 }
+
+class SplashEvent extends BaseEvent {}
+
+class SplashState extends BaseState with EquatableMixin {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class SplashEntryState extends SplashState {}

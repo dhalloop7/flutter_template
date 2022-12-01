@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+import 'package:lottie/lottie.dart';
+import 'package:statemanagement_bloc/statemanagement_bloc.dart';
 
 import 'splash_page_model.dart';
 
 class SplashPageView extends BasePageViewWidget<SplashViewModel> {
-  SplashPageView(ProviderBase<SplashViewModel> model) : super(model);
+  SplashPageView(SplashViewModel model) : super(model);
 
   @override
   Widget build(BuildContext context, model) {
-    return Container(
-      width: double.maxFinite,
-      height: double.maxFinite,
-      color: Colors.grey,
-      alignment: Alignment.center,
-      child: Center(
-        child: SizedBox(
-          width: 100,
-          height: 100,
-          child: ElevatedButton(
-
-            onPressed: () {
-              model.test();
-            },
-            child: const Text("test me"),
-          ),
-        ),
-      ),
-    );
+    return Center(
+        child: Lottie.asset(
+      'assets/animations/splash_animation.json',
+      controller: model.controller,
+      onLoaded: (composition) {
+        model.controller
+          ?..duration = composition.duration
+          ..forward();
+      },
+    ));
   }
 }

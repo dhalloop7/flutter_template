@@ -1,9 +1,9 @@
 import 'package:app/themes_setup.dart';
+import 'package:app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:localisation/strings.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:services/services.dart';
-
 import 'package:themes/themes.dart';
 
 import 'navigation/app_router.dart';
@@ -15,19 +15,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeBuilder(
-      defaultThemeMode: ThemeMode.system,
+      defaultThemeMode: ThemeMode.dark,
       themes: getThemes(),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          background: Colors.blue[700],
-          secondary: Colors.yellow[700],
+          background: ColorUtils.veryDarkGray,
+          primary: ColorUtils.darkOrange,
           brightness: Brightness.dark,
         ),
       ),
       lightTheme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          background: Colors.blue[300],
-          secondary: Colors.yellow[300],
+        colorScheme:
+            ColorScheme.fromSwatch(primarySwatch: Colors.amber).copyWith(
           brightness: Brightness.light,
         ),
       ),

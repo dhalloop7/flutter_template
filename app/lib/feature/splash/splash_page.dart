@@ -1,22 +1,38 @@
+import 'package:app/di/states/viewmodels.dart';
+import 'package:app/feature/splash/splash_page_view.dart';
+import 'package:app/navigation/route_paths.dart';
+import 'package:app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:statemanagement_riverpod/statemanagement_riverpod.dart';
+import 'package:statemanagement_bloc/statemanagement_bloc.dart';
 
-import '../../di/states/viewmodels.dart';
 import 'splash_page_model.dart';
-import 'splash_page_view.dart';
 
 class SplashPage extends BasePage<SplashViewModel> {
-  const SplashPage({Key? key}) : super(key: key);
+  SplashPage({Key? key}) : super(key: key);
 
   @override
   SplashPageState createState() => SplashPageState();
 }
 
-class SplashPageState extends BaseStatefulPage<SplashViewModel, SplashPage> {
+class SplashPageState extends BaseStatefulPage<SplashViewModel, SplashPage>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+
   @override
-  ProviderBase<SplashViewModel> provideBase() {
+  SplashViewModel provideBloc() {
     return splashViewModelProvider;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+    getViewModel().controller = _controller;
+    getViewModel().controller?.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.pushReplacementNamed(context, RoutePaths.dashboard);
+      }
+    });
   }
 
   @override
@@ -31,7 +47,12 @@ class SplashPageState extends BaseStatefulPage<SplashViewModel, SplashPage> {
   }
 
   @override
+  Color scaffoldBackgroundColor() {
+    return ColorUtils.veryDarkGray;
+  }
+
+  @override
   Widget buildView(BuildContext context, SplashViewModel model) {
-    return SplashPageView(provideBase());
+    return SplashPageView(model);
   }
 }
